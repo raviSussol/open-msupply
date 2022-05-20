@@ -21,11 +21,13 @@ export const HeaderRow: FC<PropsWithChildren<{ dense?: boolean }>> = ({
 interface HeaderCellProps<T extends RecordWithId> {
   column: Column<T>;
   dense?: boolean;
+  onChangeSortBy?: (column: Column<T>) => void;
 }
 
 export const HeaderCell = <T extends RecordWithId>({
   column,
   dense = false,
+  onChangeSortBy: onChangeSortAlt,
 }: HeaderCellProps<T>): JSX.Element => {
   const {
     maxWidth,
@@ -45,7 +47,10 @@ export const HeaderCell = <T extends RecordWithId>({
   const isSorted = key === currentSortKey;
 
   const onSort = useDebounceCallback(
-    () => onChangeSortBy && sortable && onChangeSortBy(column),
+    () => {
+      if (onChangeSortAlt) return onChangeSortAlt(column);
+      else return onChangeSortBy && sortable && onChangeSortBy(column);
+    },
     [column],
     150
   );

@@ -12,6 +12,7 @@ import {
   NothingHere,
   useToggle,
   createQueryParamsStore,
+  useHandleQueryParams,
 } from '@openmsupply-client/common';
 import { getStatusTranslator, isOutboundDisabled } from '../../utils';
 import { Toolbar } from './Toolbar';
@@ -35,8 +36,19 @@ export const OutboundShipmentListViewComponent: FC = () => {
 
   const { data, isError, isLoading, sort, pagination, filter } =
     useOutbound.document.list();
-  const { onChangeSortBy, sortBy } = sort;
+  const {
+    urlQuery,
+    updateSortQuery,
+    updatePaginationQuery,
+    updateFilterQuery,
+    onChangeUrlQuery,
+  } = useHandleQueryParams({ sort, pagination, filterKey: 'otherPartyName' });
+  const { sortBy } = sort;
   useDisableOutboundRows(data?.nodes);
+
+  useEffect(() => {
+    onChangeUrlQuery(columns, filter);
+  }, [urlQuery]);
 
   const columns = useColumns<OutboundRowFragment>(
     [
@@ -68,18 +80,19 @@ export const OutboundShipmentListViewComponent: FC = () => {
       ],
       'selection',
     ],
-    { onChangeSortBy, sortBy },
+    { onChangeSortBy: () => {}, sortBy },
     [sortBy]
   );
 
   return (
     <>
-      <Toolbar filter={filter} />
+      <Toolbar filter={filter} updateFilter={updateFilterQuery} />
       <AppBarButtons sortBy={sortBy} modalController={modalController} />
 
       <DataTable
         pagination={{ ...pagination, total: data?.totalCount }}
-        onChangePage={pagination.onChangePage}
+        onChangePage={updatePaginationQuery}
+        onChangeSortBy={updateSortQuery}
         columns={columns}
         data={data?.nodes ?? []}
         isError={isError}
