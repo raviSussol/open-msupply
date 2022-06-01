@@ -4,7 +4,7 @@ fragment PatientRow on NameNode {
   firstName
   lastName
   name
-  dateOfBirth
+  # dateOfBirth
 }
 
 fragment Patient on NameNode {
@@ -15,7 +15,7 @@ fragment Patient on NameNode {
   comment
   country
   createdDatetime
-  dateOfBirth
+  # dateOfBirth
   email
   firstName
   id

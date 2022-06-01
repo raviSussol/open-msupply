@@ -36,14 +36,14 @@ const PatientListComponent: FC = () => {
         key: 'lastName',
         label: 'label.last-name',
       },
-      {
-        key: 'dateOfBirth',
-        label: 'label.date-of-birth',
-        align: ColumnAlign.Right,
-        width: 160,
-        formatter: dateString =>
-          dateString ? localisedDate((dateString as string) || '') : '',
-      },
+      // {
+      //   key: 'dateOfBirth',
+      //   label: 'label.date-of-birth',
+      //   align: ColumnAlign.Right,
+      //   width: 160,
+      //   formatter: dateString =>
+      //     dateString ? localisedDate((dateString as string) || '') : '',
+      // },
     ],
     {
       sortBy,

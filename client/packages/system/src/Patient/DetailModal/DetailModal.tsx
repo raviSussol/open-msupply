@@ -14,6 +14,9 @@ import {
   MuiLink,
 } from '@openmsupply-client/common';
 import { usePatient } from '../api';
+import { patient } from './demoPatient';
+import schema from './json/patient_schema.json';
+import Form from '@rjsf/core';
 
 interface DetailModalProps {
   nameId: string;
@@ -26,20 +29,34 @@ export const DetailModal: FC<DetailModalProps> = ({ nameId }) => {
   const isDisabled = true;
   const { localisedDate } = useFormatDateTime();
 
-  useEffect(() => {
-    setSuffix(data?.name ?? '');
-  }, [data]);
+  const uiSchema = {
+    'ui:order': ['firstName', 'lastName', '*'],
+  };
 
   if (isLoading) return <BasicSpinner />;
 
   return !!data ? (
     <DetailContainer>
-      <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
-        <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        gap={2}
+        maxWidth={600}
+      >
+        <Form
+          schema={schema}
+          uiSchema={uiSchema}
+          formData={patient}
+          onChange={() => console.log('changed')}
+          onSubmit={() => console.log('submitted')}
+          onError={() => console.log('errors')}
+        />
+        {/* <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
           {data.name}
         </Typography>
-        <Grid container flex={1} flexDirection="row" gap={4}>
-          <DetailSection title="">
+        <Grid container flex={1} flexDirection="row" gap={4}> */}
+        {/* <DetailSection title="">
             <DetailInputWithLabelRow
               label={t('label.address')}
               inputProps={{ value: data?.address1, disabled: isDisabled }}
@@ -109,8 +126,8 @@ export const DetailModal: FC<DetailModalProps> = ({ nameId }) => {
                 <Checkbox disabled={isDisabled} checked={data?.isOnHold} />
               }
             />
-          </DetailSection>
-        </Grid>
+          </DetailSection> */}
+        {/* </Grid> */}
       </Box>
     </DetailContainer>
   ) : null;

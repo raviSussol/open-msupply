@@ -17,6 +17,7 @@
     "@mui/lab": "^5.0.0-alpha.59",
     "@mui/material": "^5.2.3",
     "@openmsupply-client/config": "^0.0.0",
+    "@rjsf/core": "^4.2.0",
     "currency.js": "^2.0.4",
     "date-fns": "^2.27.0",
     "dompurify": "^2.3.5",
