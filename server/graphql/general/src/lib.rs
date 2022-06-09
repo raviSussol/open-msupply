@@ -1,9 +1,10 @@
 mod mutations;
 mod queries;
+pub use self::mutations::sync_status::*;
+use async_graphql::*;
 
 use self::queries::*;
 
-use async_graphql::*;
 use graphql_core::pagination::PaginationInput;
 use mutations::server_settings::{
     update_server_settings, UpdateServerSettingsInput, UpdateServerSettingsResponse,

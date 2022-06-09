@@ -18,7 +18,7 @@ use graphql_core::loader::LoaderRegistry;
 use graphql_core::{auth_data_from_request, RequestUserData, SelfRequest};
 use graphql_general::{
     GeneralQueries, ServerAdminMutations, ServerAdminQueries, ServerAdminStage0Mutations,
-    ServerAdminStage0Queries,
+    ServerAdminStage0Queries, SyncInfoQueries,
 };
 use graphql_invoice::{InvoiceMutations, InvoiceQueries};
 use graphql_invoice_line::InvoiceLineMutations;
@@ -38,6 +38,7 @@ use tokio::sync::mpsc::Sender;
 
 #[derive(MergedObject, Default, Clone)]
 pub struct FullQuery(
+    pub SyncInfoQueries,
     pub InvoiceQueries,
     pub LocationQueries,
     pub StocktakeQueries,
@@ -65,6 +66,7 @@ type Builder = SchemaBuilder<FullQuery, FullMutation, EmptySubscription>;
 
 pub fn full_query() -> FullQuery {
     FullQuery(
+        SyncInfoQueries,
         InvoiceQueries,
         LocationQueries,
         StocktakeQueries,
@@ -146,7 +148,7 @@ pub fn build_schema(
 }
 
 pub type SchemaStage0 = async_graphql::Schema<
-    ServerAdminStage0Queries,
+    SyncInfoQueries,
     ServerAdminStage0Mutations,
     async_graphql::EmptySubscription,
 >;
@@ -162,7 +164,7 @@ pub fn build_schema_stage0(
     include_logger: bool,
 ) -> SchemaStage0 {
     let mut builder = SchemaStage0::build(
-        ServerAdminStage0Queries,
+        SyncInfoQueries,
         ServerAdminStage0Mutations,
         EmptySubscription,
     )
