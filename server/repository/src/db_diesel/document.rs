@@ -109,8 +109,8 @@ impl DocumentFilter {
         }
     }
 
-    pub fn name(mut self, name: Option<EqualFilter<String>>) -> Self {
-        self.name = name;
+    pub fn name(mut self, name: EqualFilter<String>) -> Self {
+        self.name = Some(name);
         self
     }
 }
@@ -150,9 +150,9 @@ impl<'a> DocumentRepository<'a> {
             name: doc.name.to_owned(),
             head: doc.id.to_owned(),
         };
-        diesel::insert_into(document_head_dsl::document_head)
+        diesel::insert_into(document_head::dsl::document_head)
             .values(&row)
-            .on_conflict(document_head_dsl::id)
+            .on_conflict(document_head::dsl::id)
             .do_update()
             .set(&row)
             .execute(&self.connection.connection)?;
