@@ -1,13 +1,10 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   TableProvider,
   DataTable,
   useColumns,
   createTableStore,
-  useDialog,
-  DialogButton,
-  Fade,
   NothingHere,
   createQueryParamsStore,
   useFormatDateTime,
@@ -15,18 +12,15 @@ import {
   useAlertModal,
   useTranslation,
 } from '@openmsupply-client/common';
-import { TransitionProps } from '@mui/material/transitions';
-import { DetailModal } from '../DetailModal';
 import { usePatient, PatientRowFragment } from '../api';
 import { AppBarButtons } from './AppBarButtons';
 
 const PatientListComponent: FC = () => {
-  const [selectedId, setSelectedId] = useState<string | undefined>();
+  // const [selectedId, setSelectedId] = useState<string | undefined>();
   const { data, isError, isLoading, pagination, sort } =
     usePatient.document.list();
   const t = useTranslation('common');
   const { sortBy, onChangeSortBy } = sort;
-  const { Modal, showDialog, hideDialog } = useDialog();
   const { localisedDate } = useFormatDateTime();
   const navigate = useNavigate();
   const alert = useAlertModal({
@@ -61,15 +55,6 @@ const PatientListComponent: FC = () => {
     [sortBy]
   );
 
-  const Transition = React.forwardRef(
-    (
-      props: TransitionProps & {
-        children: React.ReactElement;
-      },
-      ref: React.Ref<unknown>
-    ) => <Fade ref={ref} {...props} timeout={800}></Fade>
-  );
-
   return (
     <>
       <AppBarButtons sortBy={sortBy} />
@@ -88,15 +73,6 @@ const PatientListComponent: FC = () => {
         }}
         noDataElement={<NothingHere />}
       />
-      <Modal
-        title=""
-        sx={{ maxWidth: '90%' }}
-        okButton={<DialogButton variant="ok" onClick={hideDialog} />}
-        slideAnimation={false}
-        Transition={Transition}
-      >
-        <DetailModal docId={selectedId} />
-      </Modal>
     </>
   );
 };
