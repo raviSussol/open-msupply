@@ -18,6 +18,14 @@ import { LoginTextInput } from './LoginTextInput';
 import { useLoginForm } from './hooks';
 import { LoginLayout } from './LoginLayout';
 
+const sponsors = [
+  {
+    name: 'The Global Fund',
+    logo: '/the-global-fund.svg',
+    url: 'https://www.theglobalfund.org/',
+  },
+];
+
 export const Login = () => {
   const t = useTranslation('app');
   const { connectedServer } = useElectronClient();
@@ -105,6 +113,7 @@ export const Login = () => {
       onLogin={async () => {
         if (isValid) await onLogin();
       }}
+      sponsors={sponsors}
     />
   );
 };

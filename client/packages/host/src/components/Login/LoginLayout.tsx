@@ -8,14 +8,29 @@ import {
 import { LoginIcon } from './LoginIcon';
 import { Theme } from '@common/styles';
 
+export interface Sponsor {
+  name: string;
+  logo: string;
+  url: string;
+}
+
 type LoginLayoutProps = {
   ServerInfo: React.ReactNode;
   UsernameInput: React.ReactNode;
   PasswordInput: React.ReactNode;
   LoginButton: React.ReactNode;
   ErrorMessage: React.ReactNode;
+  sponsors: Sponsor[];
   onLogin: () => Promise<void>;
 };
+
+const Sponsor = ({ name, logo, url }: Sponsor) => (
+  <Box>
+    <a href={url} title={name}>
+      <img src={logo} height={30} />
+    </a>
+  </Box>
+);
 
 export const LoginLayout = ({
   ServerInfo,
@@ -23,6 +38,7 @@ export const LoginLayout = ({
   PasswordInput,
   LoginButton,
   ErrorMessage,
+  sponsors,
   onLogin,
 }: LoginLayoutProps) => {
   const t = useTranslation('app');
@@ -116,6 +132,24 @@ export const LoginLayout = ({
             </form>
           </Box>
         </Box>
+        {sponsors ? (
+          <Box
+            flex={1}
+            display="flex"
+            alignItems="center"
+            flexDirection="column"
+            padding={3}
+          >
+            <Box>
+              <Typography>{t('login.support-of')}</Typography>
+            </Box>
+            <Box display="flex" flexWrap="wrap" justifyContent="center">
+              {sponsors.map(sponsor => (
+                <Sponsor key={sponsor.name} {...sponsor} />
+              ))}
+            </Box>
+          </Box>
+        ) : null}
       </Box>
       <Typography
         component="div"
