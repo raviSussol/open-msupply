@@ -1,10 +1,12 @@
-import { ItemWithPackSizeFragment } from '@openmsupply-client/system';
+import { InboundLineFragment } from '../../operations.generated';
 import { useInboundItems } from '../line/useInboundItems';
+
+type NextInboundLineItem =  InboundLineFragment["item"];
 
 export const useNextItem = (
   currentItemId: string
-): { next: ItemWithPackSizeFragment | null; disabled: boolean } => {
-  const next: ItemWithPackSizeFragment | null = null;
+): { next: NextInboundLineItem | null; disabled: boolean } => {
+  const next: NextInboundLineItem | null = null;
   const disabled = true;
   const { data } = useInboundItems();
 
