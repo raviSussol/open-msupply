@@ -59,15 +59,30 @@ pub fn check_invoice_status(
     on_hold_option: &Option<bool>,
 ) -> Result<(), InvoiceRowStatusError> {
     if let Some(new_status) = status_option {
-        let existing_status: InvoiceRowStatus = invoice.status.clone().into();
+        let existing_status = &invoice.status;
+
+        if new_status == *existing_status {
+            return Ok(());
+        }
         // When we update invoice, error will trigger if
         // * invoice is currently on hold and is not being change to be not on hold
-        let is_not_on_hold = !invoice.on_hold || !on_hold_option.unwrap_or(true);
-
-        if new_status != existing_status && !is_not_on_hold {
+        if invoice.on_hold && on_hold_option.unwrap_or(false) {
             return Err(InvoiceRowStatusError::CannotChangeStatusOfInvoiceOnHold);
         }
-        if new_status.index() < existing_status.index() {
+
+        use InvoiceRowStatus::*;
+        // Invoice status order New, Allocated, Picked, Shipped, Delivered, Verified
+        let status_is_being_reversed = match (new_status, existing_status) {
+            (New, _) => true,
+            (Allocated, Picked | Shipped | Delivered | Verified) => true,
+            (Picked, Shipped | Delivered | Verified) => true,
+            (Shipped, Delivered | Verified) => true,
+            (Delivered, Verified) => true,
+            (Verified, _) => false,
+            _ => false,
+        };
+
+        if status_is_being_reversed {
             return Err(InvoiceRowStatusError::CannotReverseInvoiceStatus);
         }
     }

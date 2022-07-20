@@ -401,19 +401,6 @@ impl InvoiceFilter {
     }
 }
 
-impl InvoiceRowStatus {
-    pub fn index(&self) -> u8 {
-        match self {
-            InvoiceRowStatus::New => 1,
-            InvoiceRowStatus::Allocated => 2,
-            InvoiceRowStatus::Picked => 3,
-            InvoiceRowStatus::Shipped => 4,
-            InvoiceRowStatus::Delivered => 5,
-            InvoiceRowStatus::Verified => 6,
-        }
-    }
-}
-
 impl Invoice {
     pub fn other_party_name(&self) -> &str {
         &self.name_row.name

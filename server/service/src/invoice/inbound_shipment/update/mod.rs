@@ -21,7 +21,7 @@ use validate::validate;
 
 use self::generate::LineAndStockLine;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum UpdateInboundShipmentStatus {
     Delivered,
     Verified,
