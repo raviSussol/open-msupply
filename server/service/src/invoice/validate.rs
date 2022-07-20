@@ -66,7 +66,7 @@ pub fn check_invoice_status(
         }
         // When we update invoice, error will trigger if
         // * invoice is currently on hold and is not being change to be not on hold
-        if invoice.on_hold && on_hold_option.unwrap_or(false) {
+        if invoice.on_hold && on_hold_option.unwrap_or(true) {
             return Err(InvoiceRowStatusError::CannotChangeStatusOfInvoiceOnHold);
         }
 
