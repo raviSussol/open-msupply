@@ -77,7 +77,7 @@ const EncounterListComponent: FC = () => {
     useExtendEncounterFragment(data?.nodes);
   const pagination = { page, first, offset };
   const { localisedDateTime } = useFormatDateTime();
-  const { setCurrent, setDocument, setProgramType } = usePatientModalStore();
+  const { setEditingModal } = usePatientModalStore();
 
   const columns = useColumns<EncounterFragmentExt>(
     [
@@ -122,9 +122,12 @@ const EncounterListComponent: FC = () => {
       isLoading={isLoading}
       isError={isError}
       onRowClick={row => {
-        setDocument({ type: row.type, name: row.name });
-        setProgramType(row.program);
-        setCurrent(PatientModal.Encounter);
+        setEditingModal(
+          PatientModal.Encounter,
+          row.type,
+          row.name,
+          row.program
+        );
       }}
       noDataElement={<NothingHere />}
     />
